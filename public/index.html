@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Експертне Опитування | ТОП-3 Ігри</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0f172a; 
+            --card-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --primary: #6366f1; 
+            --primary-hover: #4f46e5;
+            --success: #10b981; 
+            --info: #0ea5e9; 
+            --warning: #f59e0b; 
+            --danger: #ef4444; 
+            --border: #334155;
+        }
+
+        body { 
+            font-family: 'Montserrat', sans-serif; 
+            background-color: var(--bg-color); 
+            color: var(--text-main); 
+            margin: 0; 
+            padding: 30px 15px; 
+            background-image: radial-gradient(circle at top right, #1e1b4b, #0f172a);
+            min-height: 100vh;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .container { 
+            max-width: 500px; 
+            margin: 0 auto; 
+            background: var(--card-bg); 
+            padding: 40px 30px; 
+            border-radius: 16px; 
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); 
+            border: 1px solid var(--border);
+            animation: fadeIn 0.5s ease-out;
+            position: relative;
+        }
+
+        .admin-dashboard { 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        h1, h2, h3 { 
+            text-align: center; 
+            margin-top: 0; 
+            letter-spacing: 1px;
+            color: #ffffff;
+        }
+
+        h1 { font-weight: 800; font-size: 28px; text-transform: uppercase; margin-bottom: 5px; }
+        .subtitle { text-align: center; color: var(--text-muted); font-size: 13px; margin-bottom: 30px; }
+
+        input, select { 
+            width: 100%; 
+            padding: 14px; 
+            margin: 10px 0 20px 0; 
+            background: #0f172a; 
+            border: 1px solid var(--border); 
+            color: white; 
+            border-radius: 8px; 
+            font-size: 15px; 
+            font-family: 'Montserrat', sans-serif;
+            transition: all 0.3s;
+        }
+        input:focus, select:focus { 
+            outline: none; 
+            border-color: var(--primary); 
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2); 
+        }
+
+        label { font-weight: 600; font-size: 14px; display: block; margin-top: 10px; }
+        .rank-1 { color: var(--success); text-shadow: 0 0 10px rgba(16, 185, 129, 0.4); }
+        .rank-2 { color: var(--info); text-shadow: 0 0 10px rgba(14, 165, 233, 0.4); }
+        .rank-3 { color: var(--warning); text-shadow: 0 0 10px rgba(245, 158, 11, 0.4); }
+
+        button { 
+            width: 100%; 
+            padding: 14px; 
+            background: var(--primary); 
+            color: white; 
+            border: none; 
+            border-radius: 8px; 
+            font-size: 16px; 
+            font-weight: 600; 
+            cursor: pointer; 
+            transition: all 0.2s; 
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        button:hover { background: var(--primary-hover); transform: translateY(-2px); box-shadow: 0 10px 20px -10px var(--primary); }
+        button:disabled { background: var(--border); cursor: not-allowed; transform: none; box-shadow: none; }
+
+        .btn-small { width: auto; padding: 8px 16px; font-size: 12px; border-radius: 6px; }
+        .btn-danger { background: var(--danger); }
+        .btn-danger:hover { background: #b91c1c; box-shadow: 0 10px 20px -10px var(--danger); }
+        .btn-secondary { background: #475569; }
+        .btn-secondary:hover { background: #334155; box-shadow: 0 10px 20px -10px #000; }
+        .btn-logout { background: #334155; color: #f8fafc; border: 1px solid var(--border); }
+        .btn-logout:hover { background: var(--danger); box-shadow: 0 10px 20px -10px var(--danger); }
+
+        .toggle-link { 
+            display: block; 
+            text-align: center; 
+            margin-top: 20px; 
+            color: var(--info); 
+            text-decoration: none; 
+            font-size: 14px; 
+            font-weight: 600; 
+            cursor: pointer; 
+        }
+        .toggle-link:hover { text-decoration: underline; color: #38bdf8; }
+
+        .hidden { display: none !important; }
+        .msg-box { text-align: center; font-weight: 600; padding: 10px; border-radius: 8px; margin-top: 15px; font-size: 14px; }
+        .error { background: rgba(239, 68, 68, 0.1); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.3); }
+        .success { background: rgba(16, 185, 129, 0.1); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.3); }
+
+        .admin-panel { 
+            background: var(--card-bg); 
+            padding: 25px; 
+            border-radius: 12px; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3); 
+            margin-bottom: 25px; 
+            border: 1px solid var(--border);
+        }
+        .grid-container { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; }
+        @media (max-width: 900px) { .grid-container { grid-template-columns: 1fr; } }
+        
+        .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 15px; }
+        .panel-header h2 { margin: 0; font-size: 18px; text-align: left; }
+        .action-btns { display: flex; gap: 10px; }
+
+        .table-container { overflow-x: auto; }
+        table { width: 100%; border-collapse: separate; border-spacing: 0; text-align: left; font-size: 14px; }
+        th, td { padding: 12px 15px; border-bottom: 1px solid var(--border); }
+        th { background-color: #0f172a; color: var(--text-muted); font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 1px; }
+        th:first-child { border-top-left-radius: 8px; }
+        th:last-child { border-top-right-radius: 8px; }
+        tr:hover td { background-color: rgba(255,255,255,0.02); }
+        
+        .role-badge { padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; background: #334155; border: none; color: white; cursor: pointer; }
+        .role-admin { background: rgba(99, 102, 241, 0.2); color: #818cf8; border: 1px solid #6366f1; }
+        
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-color); }
+        ::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #64748b; }
+        
+        .header-actions { display: flex; justify-content: flex-end; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+
+<div class="container" id="auth-section">
+    <h1 id="auth-title">Вхід у систему</h1>
+    <div class="subtitle">Експертне ранжування відеоігор 🎮</div>
+    
+    <label>Логін</label>
+    <input type="text" id="username" placeholder="Введіть ваш логін">
+    
+    <label>Пароль</label>
+    <input type="password" id="password" placeholder="••••••••">
+    
+    <div id="pib-container" class="hidden">
+        <label>Ваше ПІБ</label>
+        <input type="text" id="pib" placeholder="Прізвище, Ім'я">
+    </div>
+    
+    <button id="auth-btn" onclick="handleAuth()">Авторизуватись</button>
+    <a class="toggle-link" id="toggle-auth" onclick="toggleAuthMode()">Створити новий акаунт</a>
+    
+    <div id="auth-msg" class="msg-box hidden"></div>
+</div>
+
+<div class="container hidden" id="vote-section">
+    <div style="position: absolute; top: 15px; right: 15px;">
+        <button class="btn-small btn-logout" onclick="logout()">🚪 Вийти</button>
+    </div>
+    <h1 style="margin-top: 15px;">Голосування</h1>
+    <div class="subtitle" id="user-info"></div>
+    
+    <div id="dropdowns">
+        <label class="rank-1">🥇 1 Місце (3 бали)</label>
+        <select id="vote-1"></select>
+        
+        <label class="rank-2">🥈 2 Місце (2 бали)</label>
+        <select id="vote-2"></select>
+        
+        <label class="rank-3">🥉 3 Місце (1 бал)</label>
+        <select id="vote-3"></select>
+    </div>
+
+    <button onclick="submitVote()" style="margin-top: 10px;">Підтвердити вибір</button>
+    <div id="vote-msg" class="msg-box hidden"></div>
+</div>
+
+<div class="admin-dashboard hidden" id="results-section">
+    <div class="header-actions">
+        <button class="btn-small btn-logout" onclick="logout()">🚪 Вийти з акаунту</button>
+    </div>
+    <div class="admin-panel" style="max-width: 800px; margin: 0 auto 25px auto;">
+        <div class="panel-header">
+            <h2> Керування доступом</h2>
+            <button class="btn-small btn-secondary" onclick="loadUsers()">🔄 Оновити</button>
+        </div>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th><th>Логін</th><th>Права доступу</th><th style="text-align: right;">Дії</th>
+                    </tr>
+                </thead>
+                <tbody id="users-table-body"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="grid-container">
+        <div class="admin-panel">
+            <div class="panel-header">
+                <h2> Протокол голосування</h2>
+                <button class="btn-small btn-secondary" onclick="loadProtocol()">🔄 Оновити</button>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Експерт</th>
+                            <th class="rank-1">1 Місце</th>
+                            <th class="rank-2">2 Місце</th>
+                            <th class="rank-3">3 Місце</th>
+                            <th>Дія</th>
+                        </tr>
+                    </thead>
+                    <tbody id="protocol-table-body"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="admin-panel">
+            <div class="panel-header">
+                <h2> Журнал подій</h2>
+                <div class="action-btns">
+                    <button class="btn-small btn-danger" onclick="clearHistory()">🗑 Очистити</button>
+                    <button class="btn-small btn-secondary" onclick="loadHistory()">🔄 Оновити</button>
+                </div>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Час</th><th>uID</th><th>Дія в системі</th>
+                        </tr>
+                    </thead>
+                    <tbody id="history-table-body"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let currentUser = null;
+    let isLoginMode = true;
+
+    window.onload = () => {
+        const savedUser = localStorage.getItem('expertUserSession');
+        if (savedUser) {
+            currentUser = JSON.parse(savedUser);
+            showUserDashboard();
+        }
+    };
+
+    function showUserDashboard() {
+        document.getElementById('auth-section').classList.add('hidden');
+        if (currentUser.role === 'admin') {
+            document.getElementById('results-section').classList.remove('hidden');
+            loadUsers(); loadProtocol(); loadHistory();
+        } else {
+            document.getElementById('vote-section').classList.remove('hidden');
+            document.getElementById('user-info').innerText = `Експерт: ${currentUser.username}`;
+            loadGames();
+        }
+    }
+
+    function logout() {
+        localStorage.removeItem('expertUserSession');
+        window.location.reload();
+    }
+
+    function toggleAuthMode() {
+        isLoginMode = !isLoginMode;
+        
+        document.getElementById('auth-title').innerText = isLoginMode ? 'Вхід у систему' : 'Реєстрація';
+        document.getElementById('auth-btn').innerText = isLoginMode ? 'Авторизуватись' : 'Створити акаунт';
+        document.getElementById('toggle-auth').innerText = isLoginMode ? 'Створити новий акаунт' : 'Вже є акаунт? Увійти';
+        
+        document.getElementById('pib-container').classList.toggle('hidden', isLoginMode);
+        document.getElementById('auth-msg').classList.add('hidden');
+    }
+
+    function showMsg(elementId, text, isError = true) {
+        const msgBox = document.getElementById(elementId);
+        msgBox.innerText = text;
+        msgBox.className = `msg-box ${isError ? 'error' : 'success'}`;
+        msgBox.classList.remove('hidden');
+    }
+
+    async function handleAuth() {
+        const username = document.getElementById('username').value.trim();
+        const password = document.getElementById('password').value.trim();
+        const pib = document.getElementById('pib').value.trim();
+        
+        if(!username || !password) return showMsg('auth-msg', 'Помилка: Введіть логін та пароль');
+        if(!isLoginMode && !pib) return showMsg('auth-msg', 'Помилка: Введіть ваше ПІБ');
+
+        const url = isLoginMode ? '/api/login' : '/api/register';
+        const body = isLoginMode ? {username, password} : {username, password, pib};
+        const btn = document.getElementById('auth-btn');
+        
+        btn.disabled = true;
+        btn.innerText = 'Зачекайте...';
+
+        try {
+            const res = await fetch(url, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(body) });
+            const data = await res.json();
+            
+            if(data.success) {
+                if(!isLoginMode) { 
+                    toggleAuthMode(); 
+                    showMsg('auth-msg', 'Акаунт створено! Тепер увійдіть.', false); 
+                } else {
+                    currentUser = data.user;
+                    localStorage.setItem('expertUserSession', JSON.stringify(currentUser));
+                    showUserDashboard();
+                }
+            } else { 
+                showMsg('auth-msg', data.error); 
+            }
+        } catch (e) { 
+            showMsg('auth-msg', 'Втрачено зв\'язок із сервером'); 
+        } finally {
+            btn.disabled = false;
+            btn.innerText = isLoginMode ? 'Авторизуватись' : 'Створити акаунт';
+        }
+    }
+
+    async function loadGames() {
+        try {
+            const res = await fetch('/api/games');
+            const games = await res.json();
+            [1,2,3].forEach(num => {
+                const select = document.getElementById(`vote-${num}`);
+                select.innerHTML = '<option value="">-- Натисніть щоб обрати --</option>' + 
+                                games.map(g => `<option value="${g.id}">${g.title}</option>`).join('');
+            });
+        } catch (error) { console.error(error); }
+    }
+
+    async function submitVote() {
+        const v1 = document.getElementById('vote-1').value;
+        const v2 = document.getElementById('vote-2').value;
+        const v3 = document.getElementById('vote-3').value;
+        
+        if (!v1 || !v2 || !v3 || v1===v2 || v1===v3 || v2===v3) {
+            return showMsg('vote-msg', 'Помилка: Оберіть 3 різні гри!');
+        }
+
+        const votes = [{gameId: v1, priority: 1}, {gameId: v2, priority: 2}, {gameId: v3, priority: 3}];
+        try {
+            const res = await fetch('/api/vote', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({userId: currentUser.id, votes}) });
+            const data = await res.json();
+            
+            if (data.success) {
+                showMsg('vote-msg', 'Голоси зашифровано та збережено!', false);
+                document.querySelectorAll('select').forEach(s => s.disabled = true);
+            } else {
+                showMsg('vote-msg', data.error);
+            }
+        } catch (e) { showMsg('vote-msg', 'Помилка сервера'); }
+    }
+
+    async function loadUsers() {
+        try {
+            const res = await fetch('/api/users');
+            const users = await res.json();
+            document.getElementById('users-table-body').innerHTML = users.map(u => {
+                const roleClass = u.role === 'admin' ? 'role-admin' : '';
+                return `
+                <tr>
+                    <td style="color:var(--text-muted)">#${u.id}</td>
+                    <td><strong>${u.username || 'N/A'}</strong></td>
+                    <td>
+                        <select class="role-badge ${roleClass}" onchange="changeRole(${u.id}, this.value)">
+                            <option value="expert" ${u.role==='expert'?'selected':''}>Експерт</option>
+                            <option value="admin" ${u.role==='admin'?'selected':''}>Адміністратор</option>
+                        </select>
+                    </td>
+                    <td style="text-align: right;">
+                        <button class="btn-small btn-danger" onclick="deleteUser(${u.id})">Видалити</button>
+                    </td>
+                </tr>`;
+            }).join('');
+        } catch(e) { console.error(e); }
+    }
+
+    async function changeRole(id, role) {
+        await fetch(`/api/users/${id}/role`, { method: 'PUT', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({role}) });
+        
+        if (id === currentUser.id && role === 'expert') {
+            logout();
+        } else {
+            loadUsers();
+        }
+    }
+
+    async function deleteUser(id) {
+        if(!confirm('Видалити користувача та всю його історію з бази?')) return;
+        await fetch(`/api/users/${id}`, { method: 'DELETE' });
+        
+        if (id === currentUser.id) {
+            logout();
+        } else {
+            loadUsers(); loadProtocol(); loadHistory();
+        }
+    }
+
+    async function loadProtocol() {
+        try {
+            const res = await fetch('/api/protocol');
+            const protocol = await res.json();
+            
+            if(protocol.length === 0) {
+                document.getElementById('protocol-table-body').innerHTML = '<tr><td colspan="5" style="text-align:center; color:var(--text-muted);">Даних ще немає</td></tr>';
+                return;
+            }
+
+            document.getElementById('protocol-table-body').innerHTML = protocol.map(p => `
+                <tr>
+                    <td><strong>${p.username || 'Анонім'}</strong></td>
+                    <td style="color:var(--success)">${p.first_place || '---'}</td>
+                    <td style="color:var(--info)">${p.second_place || '---'}</td>
+                    <td style="color:var(--warning)">${p.third_place || '---'}</td>
+                    <td><button class="btn-small btn-danger" onclick="deleteUserVotes(${p.id})">Скинути</button></td>
+                </tr>
+            `).join('');
+        } catch(e) { console.error(e); }
+    }
+
+    async function deleteUserVotes(userId) {
+        if(!confirm('Анулювати результати голосування цього експерта?')) return;
+        await fetch(`/api/votes/${userId}`, { method: 'DELETE' });
+        loadProtocol(); loadHistory();
+    }
+
+    async function loadHistory() {
+        try {
+            const res = await fetch('/api/history');
+            const history = await res.json();
+            
+            if(history.length === 0) {
+                document.getElementById('history-table-body').innerHTML = '<tr><td colspan="3" style="text-align:center; color:var(--text-muted);">Журнал порожній</td></tr>';
+                return;
+            }
+
+            document.getElementById('history-table-body').innerHTML = history.map(h => {
+                const timeStr = new Date(h.created_at).toLocaleTimeString('uk-UA', {hour: '2-digit', minute:'2-digit', second:'2-digit'});
+                return `
+                <tr>
+                    <td style="color:var(--text-muted); font-size:12px;">${timeStr}</td>
+                    <td><strong>uID:${h.user_id}</strong></td>
+                    <td style="font-size:12px;">${h.action_text}</td>
+                </tr>`;
+            }).join('');
+        } catch(e) { console.error(e); }
+    }
+
+    async function clearHistory() {
+        if(!confirm('Безповоротно очистити весь журнал подій?')) return;
+        await fetch('/api/history', { method: 'DELETE' });
+        loadHistory(); 
+    }
+</script>
+
+</body>
+</html>
