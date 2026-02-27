@@ -86,7 +86,22 @@ app.post('/api/vote', async (req, res) => {
     } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
-// 5. Отримання всіх користувачів
+// 5. Отримання результатів для Подіуму (Метод Борда)
+app.get('/api/results', async (req, res) => {
+    try {
+        const result = await pool.query(`
+            SELECT g.title, 
+                SUM(CASE WHEN v.priority = 1 THEN 3 WHEN v.priority = 2 THEN 2 WHEN v.priority = 3 THEN 1 ELSE 0 END) as score
+            FROM games g
+            LEFT JOIN votes v ON g.id = v.game_id
+            GROUP BY g.id, g.title
+            ORDER BY score DESC NULLS LAST
+        `);
+        res.json(result.rows);
+    } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+// 6. Отримання всіх користувачів
 app.get('/api/users', async (req, res) => {
     try {
         const result = await pool.query('SELECT id, username, role FROM users ORDER BY id');
@@ -94,7 +109,7 @@ app.get('/api/users', async (req, res) => {
     } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
-// 6. Зміна ролі користувача
+// 7. Зміна ролі користувача
 app.put('/api/users/:id/role', async (req, res) => {
     try {
         const { role } = req.body;
@@ -103,7 +118,7 @@ app.put('/api/users/:id/role', async (req, res) => {
     } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
-// 7. Протокол голосування
+// 8. Протокол голосування
 app.get('/api/protocol', async (req, res) => {
     try {
         const result = await pool.query(`
@@ -120,7 +135,7 @@ app.get('/api/protocol', async (req, res) => {
     } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
-// 8. Історія дій
+// 9. Історія дій
 app.get('/api/history', async (req, res) => {
     try {
         const result = await pool.query('SELECT id, user_id, action_text, created_at FROM action_history ORDER BY id DESC');
@@ -128,7 +143,7 @@ app.get('/api/history', async (req, res) => {
     } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
-// 9. Видалення користувача за ID
+// 10. Видалення користувача за ID
 app.delete('/api/users/:id', async (req, res) => {
     const client = await pool.connect();
     try {
@@ -145,7 +160,7 @@ app.delete('/api/users/:id', async (req, res) => {
     } finally { client.release(); }
 });
 
-// 10. Видалення результатів голосування конкретного експерта
+// 11. Видалення результатів голосування конкретного експерта
 app.delete('/api/votes/:userId', async (req, res) => {
     try {
         await pool.query('DELETE FROM votes WHERE user_id = $1', [req.params.userId]);
@@ -154,7 +169,7 @@ app.delete('/api/votes/:userId', async (req, res) => {
     } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
-// 11. Очищення всієї історії дій
+// 12. Очищення всієї історії дій
 app.delete('/api/history', async (req, res) => {
     try {
         await pool.query('DELETE FROM action_history');
