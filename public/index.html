@@ -108,11 +108,16 @@
         .grid-container { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; }
         @media (max-width: 900px) { .grid-container { grid-template-columns: 1fr; } }
         
-        table { width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; }
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        table { width: 100%; min-width: 500px; border-collapse: collapse; text-align: left; font-size: 14px; }
         th, td { padding: 12px 15px; border-bottom: 1px solid var(--border); }
         th { background-color: #0f172a; color: var(--text-muted); text-transform: uppercase; font-size: 11px; letter-spacing: 1px; }
 
-        /* ВИРІВНЮВАННЯ ДІЙ ПО ПРАВОМУ КРАЮ */
         .text-right { text-align: right; }
 
         .role-badge { 
@@ -127,6 +132,7 @@
             margin: 0;
             cursor: pointer;
         }
+        .role-badge:focus { border-color: var(--primary); }
 
         .podium { display: flex; justify-content: center; align-items: flex-end; gap: 15px; margin: 40px 0; height: 200px; }
         .step { width: 120px; background: var(--card-bg); border: 2px solid var(--border); border-radius: 12px 12px 0 0; text-align: center; padding-bottom: 15px; }
@@ -179,26 +185,30 @@
         <div class="step s3"><small>🥉 3 місце</small><div id="p3" style="font-weight: 800; font-size: 14px;"></div></div>
     </div>
     <h3>Повний рейтинг</h3>
-    <table><thead><tr><th>#</th><th>Гра</th><th class="text-right">Бали</th></tr></thead><tbody id="full-ranking"></tbody></table>
+    <div class="table-container">
+        <table><thead><tr><th>#</th><th>Гра</th><th class="text-right">Бали</th></tr></thead><tbody id="full-ranking"></tbody></table>
+    </div>
 </div>
 
 <div class="admin-dashboard hidden section" id="results-section">
-    <div class="admin-panel">
+    <div class="admin-panel" style="max-width: 900px; margin: 0 auto 30px auto;">
         <div class="panel-header">
             <h2>👥 Користувачі</h2>
             <button class="btn-small btn-secondary" onclick="loadUsers()">🔄 Оновити</button>
         </div>
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Логін</th>
-                    <th>Роль</th>
-                    <th class="text-right">Дії</th>
-                </tr>
-            </thead>
-            <tbody id="users-table-body"></tbody>
-        </table>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Логін</th>
+                        <th>Роль</th>
+                        <th class="text-right">Дії</th>
+                    </tr>
+                </thead>
+                <tbody id="users-table-body"></tbody>
+            </table>
+        </div>
     </div>
 
     <div class="grid-container">
@@ -207,18 +217,20 @@
                 <h2>📊 Протокол</h2>
                 <button class="btn-small btn-secondary" onclick="loadProtocol()">🔄 Оновити</button>
             </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Експерт</th>
-                        <th>1</th>
-                        <th>2</th>
-                        <th>3</th>
-                        <th class="text-right">Дія</th>
-                    </tr>
-                </thead>
-                <tbody id="protocol-table-body"></tbody>
-            </table>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Експерт</th>
+                            <th>1</th>
+                            <th>2</th>
+                            <th>3</th>
+                            <th class="text-right">Дія</th>
+                        </tr>
+                    </thead>
+                    <tbody id="protocol-table-body"></tbody>
+                </table>
+            </div>
         </div>
         <div class="admin-panel">
             <div class="panel-header">
@@ -228,16 +240,18 @@
                     <button class="btn-small btn-secondary" onclick="loadHistory()">🔄 Оновити</button>
                 </div>
             </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Час</th>
-                        <th>uID</th>
-                        <th class="text-right">Дія</th>
-                    </tr>
-                </thead>
-                <tbody id="history-table-body"></tbody>
-            </table>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Час</th>
+                            <th>uID</th>
+                            <th class="text-right">Дія</th>
+                        </tr>
+                    </thead>
+                    <tbody id="history-table-body"></tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
@@ -345,7 +359,7 @@
     async function loadProtocol() {
         const res = await fetch('/api/protocol');
         const d = await res.json();
-        document.getElementById('protocol-table-body').innerHTML = d.map(p => `<tr><td>${p.username}</td><td>${p.p1 || '-'}</td><td>${p.p2 || '-'}</td><td>${p.p3 || '-'}</td><td class="text-right"><button class="btn-small btn-danger" onclick="resetVote(${p.id})">Скинути</button></td></tr>`).join('');
+        document.getElementById('protocol-table-body').innerHTML = d.map(p => `<tr><td>${p.username}</td><td>${p.first_place || '-'}</td><td>${p.second_place || '-'}</td><td>${p.third_place || '-'}</td><td class="text-right"><button class="btn-small btn-danger" onclick="resetVote(${p.id})">Скинути</button></td></tr>`).join('');
     }
     
     async function resetVote(id) { await fetch(`/api/votes/${id}`, {method:'DELETE'}); loadProtocol(); }
