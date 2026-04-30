@@ -1,0 +1,174 @@
+/* НОВА ТЕМА: Flat, Dark Gray, Modern Minimalist */
+:root {
+    --bg-color: #111111;         /* Дуже темний фон, майже чорний */
+    --card-bg: #1c1c1c;          /* Темно-сірі картки */
+    --text-main: #e5e5e5;        /* Світло-сірий текст (не сліпить) */
+    --text-muted: #888888;       /* Приглушений текст */
+    
+    /* Змінено акцентні кольори, щоб не було схоже на копію */
+    --primary: #8b5cf6;          /* Фіолетовий акцент */
+    --primary-hover: #7c3aed;    
+    
+    /* ЦІ ТРИ КОЛЬОРИ НЕ ЗМІНЮВАВ, щоб П.9 залишився точнісінько таким самим */
+    --success: #10b981;          /* Зелений для задоволеності */
+    --info: #0ea5e9;             
+    --warning: #f59e0b;          /* Помаранчевий для відхилення */
+    --danger: #ef4444;           /* Червоний для штрафів */
+    
+    --border: #2e2e2e;           /* Тонкі сірі рамки */
+}
+
+/* Нові шрифти: Inter для читання, Space Grotesk для заголовків */
+body { 
+    font-family: 'Inter', sans-serif; 
+    background-color: var(--bg-color); 
+    color: var(--text-main); 
+    margin: 0; 
+    min-height: 100vh; 
+}
+
+h1, h2, h3 { 
+    font-family: 'Space Grotesk', sans-serif; 
+    text-align: center; 
+    margin: 0; 
+    color: #ffffff; 
+    font-weight: 700;
+}
+
+h1 { font-size: 26px; margin-bottom: 5px; letter-spacing: -0.5px; }
+.subtitle { text-align: center; color: var(--text-muted); font-size: 13px; margin-bottom: 30px; }
+
+/* Навігація стала лівосторонньою і більш строгою */
+nav { 
+    background: #1c1c1c; 
+    padding: 15px 30px; 
+    display: flex; 
+    justify-content: flex-start; 
+    gap: 25px; 
+    border-bottom: 1px solid var(--border); 
+    position: sticky; 
+    top: 0; 
+    z-index: 1000; 
+}
+nav a { color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.2s; }
+nav a:hover { color: #ffffff; }
+
+/* Картки стали квадратними (Flat Design), без великих тіней */
+.container { 
+    max-width: 500px; 
+    margin: 40px auto; 
+    background: var(--card-bg); 
+    padding: 40px 30px; 
+    border-radius: 4px; 
+    border: 1px solid var(--border); 
+    animation: fadeIn 0.4s ease-out; 
+}
+.admin-dashboard { max-width: 1200px; margin: 40px auto; padding: 0 20px; animation: fadeIn 0.4s ease-out; }
+
+/* Поля вводу стали мінімалістичними (тільки нижня лінія) */
+input, select { 
+    width: 100%; 
+    padding: 10px 0; 
+    margin: 10px 0 25px 0; 
+    background: transparent; 
+    border: none; 
+    border-bottom: 2px solid var(--border); 
+    color: white; 
+    font-size: 15px; 
+    font-family: inherit; 
+    outline: none;
+    transition: border-color 0.2s;
+}
+input:focus, select:focus { border-bottom-color: var(--primary); }
+select option { background: var(--card-bg); }
+
+/* Кнопки стали плоскими і квадратними */
+button { 
+    width: 100%; 
+    padding: 12px; 
+    background: var(--primary); 
+    color: white; 
+    border: none; 
+    border-radius: 2px; 
+    font-size: 15px; 
+    font-weight: 600; 
+    cursor: pointer; 
+    transition: background 0.2s; 
+}
+button:hover { background: var(--primary-hover); }
+.btn-small { width: auto; padding: 6px 14px; font-size: 12px; }
+.btn-danger { background: var(--danger); }
+.btn-secondary { background: transparent; color: var(--text-main); border: 1px solid var(--border); }
+.btn-secondary:hover { background: #2a2a2a; }
+
+/* Картки вибору режиму змінили вигляд */
+.mode-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 30px; }
+.mode-card { 
+    background: #252525; 
+    padding: 25px; 
+    border-radius: 4px; 
+    text-align: center; 
+    cursor: pointer; 
+    border: 1px solid var(--border);
+    transition: all 0.2s; 
+}
+.mode-card:hover { border-color: var(--text-muted); background: #2a2a2a; }
+.mode-card h2 { color: #ffffff; font-size: 16px; margin-bottom: 8px; }
+.mode-card p { color: var(--text-muted); font-size: 12px; margin: 0; }
+.lab3-special-card { background: #1f1b2e !important; border-color: #8b5cf6 !important; }
+.lab4-special-card { background: #162520 !important; border-color: #10b981 !important; }
+
+.panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+.panel-header h2 { text-align: left; font-size: 16px; font-family: 'Inter', sans-serif; font-weight: 600; }
+
+/* Адмін-панелі тепер мають акцентну лінію зліва, а не рамку навколо */
+.admin-panel { 
+    background: var(--card-bg); 
+    padding: 25px; 
+    border-radius: 4px; 
+    border: 1px solid var(--border); 
+    border-left-width: 4px; 
+    margin-bottom: 25px; 
+}
+
+.grid-container { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+@media (max-width: 900px) { .grid-container, .mode-cards { grid-template-columns: 1fr; } }
+
+/* === ТАБЛИЦІ (Звичайні) === */
+.table-container { width: 100%; overflow-x: auto; }
+table { width: 100%; min-width: 500px; border-collapse: collapse; text-align: left; font-size: 13px; }
+th, td { padding: 12px 10px; border-bottom: 1px solid var(--border); }
+th { color: var(--text-muted); font-weight: 500; }
+.text-right { text-align: right; }
+
+.hidden { display: none !important; }
+.rank-1 { color: var(--success); } .rank-2 { color: var(--info); } .rank-3 { color: var(--warning); }
+
+.lab-box { background: rgba(0,0,0,0.3); padding: 15px; border-radius: 4px; margin-bottom: 15px; font-size: 13px; line-height: 1.6; }
+
+/* === НЕЗМІННИЙ КОД ДЛЯ П.9 ЗАДОВОЛЕНОСТІ === */
+.progress-bar { width: 100%; background-color: var(--border); border-radius: 2px; overflow: hidden; margin-top: 5px; } 
+.progress-fill { height: 6px; background-color: var(--success); transition: width 0.5s ease; }
+
+/* === АКАДЕМІЧНІ ТАБЛИЦІ ЛР3 (Новий стиль: світло-сірий замість білого, строгі лінії) === */
+.academic-table { background: #e5e5e5; color: #111; border-collapse: collapse; width: auto; font-family: 'Inter', sans-serif; font-size: 14px; margin-bottom: 20px; }
+.academic-table th { color: #111; padding: 8px 12px; border: 1px solid #aaa; text-align: center; background: #d4d4d4; font-weight: 600; font-size: 14px; }
+.academic-table td { padding: 8px 12px; border: 1px solid #aaa; text-align: center; font-weight: 400; font-size: 13px; }
+.academic-sum-row td { font-weight: 700 !important; border-top: 2px solid #555 !important; }
+.brute-table th, .brute-table td { padding: 6px 8px; font-size: 12px; }
+
+/* === ДІАГРАМИ === */
+.chart-container { display: flex; align-items: flex-end; justify-content: flex-start; gap: 8px; height: 160px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 4px; padding: 20px 10px 10px 10px; margin-top: 10px; overflow-x: auto; }
+.chart-col { display: flex; flex-direction: column; justify-content: flex-end; align-items: center; min-width: 30px; height: 100%; position: relative; }
+.chart-bar-segment { width: 100%; transition: height 0.5s ease; }
+.chart-label { font-size: 12px; color: var(--text-muted); margin-top: 8px; }
+.chart-sum { position: absolute; top: -20px; font-size: 11px; color: white; }
+
+/* === ТЕРМІНАЛ ЛР4 === */
+.terminal-box { background: #161616; color: #d4d4d4; font-family: 'Consolas', 'Courier New', monospace; font-size: 12px; padding: 15px; border-radius: 4px; border: 1px solid #2a2a2a; line-height: 1.6; white-space: pre-wrap; }
+.term-green { color: #4ade80; }
+.term-orange { color: #f59e0b; }
+.term-blue { color: #60a5fa; }
+.term-white { color: #ffffff; font-weight: bold; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
